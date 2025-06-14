@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Email Hostinger</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .form { background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        .button { background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 4px; }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Email Hostinger - contact@centraldocs.ai</h1>
+    
+    <div class="form">
+        <h3>Envoyer un email de test</h3>
+        <input type="email" id="testEmail" placeholder="Votre email (philippe.canon@outlook.com)" style="width: 100%; padding: 8px; margin: 10px 0;">
+        <button class="button" onclick="sendTestEmail()">Envoyer email de test</button>
+    </div>
+    
+    <div id="result"></div>
+
+    <script>
+        async function sendTestEmail() {
+            const email = document.getElementById('testEmail').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!email) {
+                resultDiv.innerHTML = '<div class="result error">Veuillez saisir un email</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<div class="result">📤 Envoi en cours...</div>';
+            
+            try {
+                // Simulation d'envoi avec les vraies données Hostinger
+                const emailData = {
+                    from: 'contact@centraldocs.ai',
+                    to: email,
+                    subject: '🧪 Test CentralDocs - contact@centraldocs.ai',
+                    html: `
+                        <h1>✅ Test réussi !</h1>
+                        <p>Cet email a été envoyé depuis <strong>contact@centraldocs.ai</strong> via Hostinger.</p>
+                        <p><strong>Configuration :</strong></p>
+                        <ul>
+                            <li>Serveur : smtp.hostinger.com</li>
+                            <li>Port : 587</li>
+                            <li>Expéditeur : contact@centraldocs.ai</li>
+                            <li>Mot de passe : c0ckPvm0y@P</li>
+                        </ul>
+                        <p>Si vous recevez ce message, la configuration fonctionne parfaitement !</p>
+                        <hr>
+                        <p><small>CentralDocs - Gestion documentaire sécurisée</small></p>
+                    `
+                };
+                
+                // En mode développement, on simule
+                console.log('📧 EMAIL SIMULÉ - Configuration Hostinger');
+                console.log('Expéditeur:', emailData.from);
+                console.log('Destinataire:', emailData.to);
+                console.log('Objet:', emailData.subject);
+                console.log('Contenu HTML:', emailData.html);
+                
+                // Simulation d'un délai d'envoi
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        <h3>✅ Email simulé avec succès !</h3>
+                        <p><strong>Expéditeur :</strong> contact@centraldocs.ai</p>
+                        <p><strong>Destinataire :</strong> ${email}</p>
+                        <p><strong>Configuration :</strong> Hostinger SMTP</p>
+                        <p><strong>Note :</strong> En mode développement, l'email est simulé. Consultez la console pour voir les détails.</p>
+                        <p><strong>Pour recevoir de vrais emails :</strong> Déployez l'API backend avec nodemailer.</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">❌ Erreur : ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+/*    /index.html   200
+
+# Specific routes for SPA
+/login    /index.html   200
+/register    /index.html   200
+/dashboard    /index.html   200
+/clients    /index.html   200
+/client-login    /index.html   200
+/client/*    /index.html   200
+/lists    /index.html   200
+/requests    /index.html   200
+/sharing    /index.html   200
+/fix-permissions    /index.html   200
