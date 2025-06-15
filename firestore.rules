@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && isOwner(userId);
+    }
+
+    match /clients/{clientId} {
+      allow read, write: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.createdBy == request.auth.uid;
+    }
+
+    match /requests/{requestId} {
+      allow read, write: if isAuthenticated() &&
+        (
+          resource.data.createdBy == request.auth.uid ||
+          resource.data.professionalId == request.auth.uid ||
+          resource.data.clientId == request.auth.uid
+        );
+      allow create: if isAuthenticated() &&
+        (
+          request.resource.data.createdBy == request.auth.uid ||
+          request.resource.data.professionalId == request.auth.uid ||
+          request.resource.data.clientId == request.auth.uid
+        );
+
+      match /documents/{documentId} {
+        allow read, write: if isAuthenticated() &&
+          (
+            get(/databases/$(database)/documents/requests/$(requestId)).data.createdBy == request.auth.uid ||
+            get(/databases/$(database)/documents/requests/$(requestId)).data.professionalId == request.auth.uid ||
+            get(/databases/$(database)/documents/requests/$(requestId)).data.clientId == request.auth.uid
+          );
+      }
+    }
+
+    match /documentLists/{listId} {
+      allow read, write: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.createdBy == request.auth.uid;
+    }
+
+    match /shares/{shareId} {
+      allow read, write: if isAuthenticated() && resource.data.createdBy == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.createdBy == request.auth.uid;
+    }
+  }
+}
